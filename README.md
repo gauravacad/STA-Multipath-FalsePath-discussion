@@ -42,11 +42,7 @@ Always validate with designers before applying MCP constraints in STA.
 > Multi-cycle paths are common in:
 > DSPs and arithmetic blocks (e.g., multipliers, dividers)
 > State machines with multi-phase operations
-
-##Low-power gated or clock-enabled designs
-💬 **Have you ever encountered multi-cycle path issues during timing signoff or synthesis?**
-**How did you debug them? Drop your thoughts below 👇**
-
+> Low-power gated or clock-enabled designs
 
 `Diagram`
 

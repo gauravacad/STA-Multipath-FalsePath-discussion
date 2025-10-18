@@ -51,3 +51,55 @@ Always validate with designers before applying MCP constraints in STA.
 `Diagram`
 
 <img width="1074" height="328" alt="image" src="https://github.com/user-attachments/assets/845b3b83-bbf3-4e5c-8597-e125d26eaa14" />
+
+---
+
+## ⚡ Most Asked RTL / STA Question — What is a False Path?
+- When working on timing closure in ASIC or FPGA design, you might have seen engineers adding constraints like
+ **set_false_path -from ... -to ...**
+- But what exactly does a False Path mean — and why does it exist?
+
+## 🧩 False Path:
+A False Path is a timing path that exists physically in the circuit but can never be activated logically or architecturally during real operation.
+In other words:
+“The path exists in the netlist, but it’s functionally impossible for data to propagate through it.”
+
+## 🔍 Example
+Look at the diagram below 👇
+Two multiplexers (MUX0 and MUX1) share the same select signal (sel).
+```
+When sel = 0,
+MUX0 selects in0, and
+MUX1 also selects in0.
+When sel = 1,
+MUX0 selects in1, and
+MUX1 also selects in1.
+```
+
+- That means the path from MUX0.in0 → MUX1.in1 can never be active simultaneously — it’s architecturally impossible.
+-  Yet, the timing tool might still trace this path and try to close timing on it unless we explicitly declare it as a false path.
+## 🧠 Example:
+ - In a pipeline or FSM, certain combinations of states or control conditions can never co-exist.
+ - Static timing analysis (STA) doesn’t understand functional intent — it only sees connections.
+ - So without telling it which paths are false, it may try to fix timing where no data ever flows, wasting area and effort.
+ 
+## 🛠️ Handle False Paths
+ ✅ Identify and mark such paths using STA constraints: **set_false_path -from <startpoint> -to <endpoint>**
+ ✅ Use this only when logically proven that the path can never be active.
+ ✅ Don’t overuse false paths — incorrect usage can hide real timing violations.
+
+## 💡 Key Takeaway
+“False Paths are physically present but functionally impossible.”
+ Always validate before you waive!
+
+## 🧠 Pro Tip
+- False paths are common between:
+- Mutually exclusive MUX selects
+- Different clock domain interfaces
+- Debug or test-only logic
+- Marking them correctly helps STA focus on real critical paths, improving closure and chip reliability.
+
+`Diagram`
+
+<img width="892" height="454" alt="image" src="https://github.com/user-attachments/assets/201da458-c64c-49db-b085-76b65a79d12f" />
+
